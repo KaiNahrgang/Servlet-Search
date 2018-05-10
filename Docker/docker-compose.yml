@@ -1,0 +1,19 @@
+version: "3"
+services:
+  appweb:
+   build: ./app
+   image: "sectestlab:5000/servlet-search-app:0.1"
+   ports:
+    - "8888:8080"
+   links:
+    - appdb
+   environment:
+    - DATA_SOURCE_NAME=jdbc:oracle:thin:servletsearch/sectestlab@appdb:1521:XE
+
+  appdb:
+   build: ./db
+   image: "sectestlab:5000/servlet-search-db:0.1"
+   ports:
+    - "49160:22"
+    - "1521:1521"
+    - "8889:8080"

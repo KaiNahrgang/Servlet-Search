@@ -1,0 +1,19 @@
+@slow @announce
+Feature: Run sqlmap against a target
+
+Scenario: Identify SQL injection vulnerabilities
+  Given "sqlmap" is installed
+  And the following profile:
+    | name       | value                                           |
+    | target_url | http://servletsearch.com/Servlet-Search/controller?lastname=Burns&action=Search |
+    | sqlmap_path | /opt/sqlmap/sqlmap.py |
+  When I launch a "sqlmap" attack with:
+    """
+    python <sqlmap_path> -u <target_url> --dbms Oracle --batch -v 0 -D SYS --tables
+    """
+  Then the output should not contain:
+    """
+    back-end DBMS: Oracle
+    Database: SYS
+    [25 tables]
+    """
